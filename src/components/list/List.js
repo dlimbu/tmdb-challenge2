@@ -5,14 +5,18 @@ export default class List extends Lightning.Component {
     static _template() {
         return {
             Label: {
+                y: -100,
                 text: {
                     text: '', 
                     fontFace: 'SourceSansPro-Bold',
-                    fontSize: 80,
+                    fontSize: 50,
+                    wordWrap: false,
+                    wordWrapWidth: 1500,
+                    textOverflow: 'ellipsis'
                 }
             },
             Movies: {
-                y: 220,
+                y: 110,
             }
         }
     }
@@ -24,15 +28,24 @@ export default class List extends Lightning.Component {
     _handleLeft() {
         // @todo: update index and call setIndex
         this.setIndex(Math.max(--this._index, 0))
+        let asset = this.results[this._index];
+        this.tag('Label').setSmooth('y', 0, {duration: 0.5});
+        this.signal('onItemFocus', asset);
     }
 
     _handleRight() {
         // @todo: update index and call setIndex
         this.setIndex(Math.min(++this._index, this.items.length - 1))
+        let asset = this.results[this._index];
+        this.tag('Label').setSmooth('y', 0, {duration: 0.5});
+        this.signal('onItemFocus',asset);
     }
 
     _focus() {
+        this.tag('Label').setSmooth('y', 0, {duration: 0.5});
         this.label = this.results[this._index];
+        let asset = this.results[this._index];
+        this.signal('onItemFocus',asset);
     }
 
     setIndex(index) {
@@ -43,6 +56,7 @@ export default class List extends Lightning.Component {
          * on selected item
          */
          this._index = index;
+         this.tag('Label').y = -300;
          this.label = this.results[index];
     }
 
@@ -59,7 +73,7 @@ export default class List extends Lightning.Component {
             return {
                 type: Item,
                 item: asset,
-                x: idx * 410,
+                x: idx * 200,
             };
         });
     }

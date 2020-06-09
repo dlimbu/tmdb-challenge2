@@ -1,21 +1,24 @@
 import {Lightning, Utils} from 'wpe-lightning-sdk';
 import {List} from "../components"
+import { getImgUrl } from '../lib/tools';
 
 export default class Main extends Lightning.Component{
     static _template() {
         return {
-            scale: 0.5,
             Lists: {
                 x: 100,
-                y: 0.6*1080, 
-                zIndex: 3
+                y: 0.43*1080, 
+                zIndex: 3,
             },
             Logo: {
                 src: Utils.asset('images/logo.png'),
                 x: 100,
                 y: 100,
-                w: 600,
-                h: 100,
+                zIndex: 2,
+            },
+            Background: {
+                w: 1920,
+                h: 1080,
             }
         };
     }
@@ -26,7 +29,13 @@ export default class Main extends Lightning.Component{
 
     _focus() {
         console.log('Main._focus called')
-        
+  
+    }
+
+    onItemFocus(asset) {
+        let url = getImgUrl(asset.backdrop_path, 500);
+        this.tag('Background').src = url;
+        // console.log(asset);
     }
 
     /**
@@ -39,6 +48,7 @@ export default class Main extends Lightning.Component{
         this.moviesList = new List(this.stage);
         this.tag('Lists').add(this.moviesList);
         this.moviesList.movies = movieData;
+        this.moviesList.signals = { onItemFocus: true };
     }
 
     _unfocus() {

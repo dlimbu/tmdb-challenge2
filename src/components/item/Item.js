@@ -5,8 +5,8 @@ export default class Level extends Lightning.Component{
     static _template(){
         return {
             Image: {
-                w: 370,
-                h: 556,
+                // w: 370,
+                // h: 556,
             },
             Title: {
                 alpha: 0,
