@@ -5,6 +5,7 @@ export const init = (stageInstance) =>{
     stage = stageInstance;
 };
 
+export const AssetServer = "https://api.themoviedb.org/3/movie/popular";
 
 /**
  * @todo:
@@ -13,12 +14,13 @@ export const init = (stageInstance) =>{
  * and return the data
  */
 export const getMovies = async()=> {
-
+    const moviesList = await get(`${AssetServer}?api_key=`+apiKey)
+    return moviesList;
 };
 
 const get = (url)=> {
     return fetch(url, {
-        'Accept': 'application/json'
+        'Accept': 'application/json',
     }).then(response => {
         return response.json();
     })

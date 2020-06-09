@@ -52,9 +52,9 @@ export default class App extends Lightning.Component {
         // call
     }
 
-    _getFocused(){
-        return this.tag("Splash")
-    }
+    // _getFocused(){
+    //     return this.tag("Splash")
+    // }
 
     _handleLeft(){
         this.setIndex(this.index - 1);
@@ -101,7 +101,9 @@ export default class App extends Lightning.Component {
     }
 
     _getFocused() {
-        return Router.getActivePage();
+        this.tag('Splash').alpha = 0; // ????????? 
+        let page = Router.getActivePage();
+        return page;
     }
 
 }
