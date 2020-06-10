@@ -7,18 +7,28 @@ export default class Main extends Lightning.Component{
         return {
             Lists: {
                 x: 100,
-                y: 0.43*1080, 
+                y: 0.50*1080, 
                 zIndex: 3,
             },
             Logo: {
                 src: Utils.asset('images/logo.png'),
                 x: 100,
                 y: 100,
+                alpha: 0.00001,
                 zIndex: 2,
             },
             Background: {
                 w: 1920,
                 h: 1080,
+                color: 0xff000000,
+                alpha: 0.3,
+                zIndex: 1,
+                BgImage: {
+                    w: 1920,
+                    h: 1080,
+                    scale: 1.1,  
+                    pivot: 0.5,  
+                }
             }
         };
     }
@@ -27,15 +37,26 @@ export default class Main extends Lightning.Component{
         this._index = 0; 
     }
 
+    _build() {
+        this.tag('Logo').on('txLoaded', () => {
+            this.tag('Logo').alpha = 1;
+        });
+    }
+
     _focus() {
         console.log('Main._focus called')
-  
     }
 
     onItemFocus(asset) {
         let url = getImgUrl(asset.backdrop_path, 500);
-        this.tag('Background').src = url;
-        // console.log(asset);
+        this.tag('BgImage').patch({
+            src: url,
+            smooth: {
+                scale: [
+                    1, { duration: 1, }
+                ]
+            }
+        })
     }
 
     /**

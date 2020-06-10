@@ -4,10 +4,7 @@ import { getImgUrl } from '../../lib/tools'
 export default class Level extends Lightning.Component{
     static _template(){
         return {
-            Image: {
-                // w: 370,
-                // h: 556,
-            },
+            Image: { },
             Title: {
                 alpha: 0,
                 y: 280, x: 20,
@@ -23,8 +20,22 @@ export default class Level extends Lightning.Component{
 
     set item(v){
         const { poster_path, backdrop_path, title } = v;
-        this.tag('Image').src = getImgUrl(poster_path);
-        this.tag('Title').text.text = title;
+        this.patch({
+            Image: {
+                src: getImgUrl(poster_path),
+                alpha: 0.0001,
+            },
+            Titel: {
+                text: {
+                    text: title,
+                },
+                alpha: 0,
+            }
+        })
+
+        this.tag('Image').on('txLoaded', ()=> {
+            this.tag('Image').setSmooth('alpha', 1);
+        });
         // @todo: patch the correct image and title
     }
 

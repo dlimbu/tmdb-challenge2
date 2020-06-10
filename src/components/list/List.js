@@ -5,7 +5,7 @@ export default class List extends Lightning.Component {
     static _template() {
         return {
             Label: {
-                y: -100,
+                y: -50,
                 text: {
                     text: '', 
                     fontFace: 'SourceSansPro-Bold',
@@ -23,29 +23,35 @@ export default class List extends Lightning.Component {
 
     _init() {
         this._index = 0;
+        this._itemWidth = 210;
     }
 
     _handleLeft() {
         // @todo: update index and call setIndex
         this.setIndex(Math.max(--this._index, 0))
-        let asset = this.results[this._index];
         this.tag('Label').setSmooth('y', 0, {duration: 0.5});
-        this.signal('onItemFocus', asset);
+        this.signalItemFocus();
     }
 
     _handleRight() {
         // @todo: update index and call setIndex
         this.setIndex(Math.min(++this._index, this.items.length - 1))
-        let asset = this.results[this._index];
         this.tag('Label').setSmooth('y', 0, {duration: 0.5});
-        this.signal('onItemFocus',asset);
+        this.signalItemFocus();
+    }
+
+    signalItemFocus() {
+        this.signal('onItemFocus', this.results[this._index]);
     }
 
     _focus() {
         this.tag('Label').setSmooth('y', 0, {duration: 0.5});
         this.label = this.results[this._index];
-        let asset = this.results[this._index];
-        this.signal('onItemFocus',asset);
+        this.signalItemFocus();
+    }
+
+    _unfocus() {
+        
     }
 
     setIndex(index) {
@@ -56,8 +62,13 @@ export default class List extends Lightning.Component {
          * on selected item
          */
          this._index = index;
-         this.tag('Label').y = -300;
-         this.label = this.results[index];
+         this.tag('Label').patch({
+             y: -50,
+             text: {
+                 text: this.results[index].title,
+             }
+         });
+
     }
 
     set label(v) {
@@ -73,7 +84,7 @@ export default class List extends Lightning.Component {
             return {
                 type: Item,
                 item: asset,
-                x: idx * 200,
+                x: idx * this._itemWidth,
             };
         });
     }
